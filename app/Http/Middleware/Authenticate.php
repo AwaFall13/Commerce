@@ -18,4 +18,10 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+
+    // Vérifie si l'utilisateur est admin
+    protected function isAdmin($request)
+    {
+        return $request->user() && $request->user()->is_admin;
+    }
 }

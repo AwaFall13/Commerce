@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+body {
+    background: #f8f8f3;
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: #222;
+    margin: 0;
+}
+
+.navbar {
+    background: #00853e;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 0.7rem 0;
+}
+.navbar a, .navbar .nav-link {
+    color: #fff !important;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.navbar .navbar-brand {
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fcd116 !important;
+    text-shadow: 1px 1px 0 #00853e;
+}
+
+.btn, button {
+    border-radius: 25px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(0,133,62,0.08);
+    border: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-primary, .btn-success {
+    background: #fcd116;
+    color: #00853e;
+}
+.btn-primary:hover, .btn-success:hover {
+    background: #00853e;
+    color: #fff;
+}
+.btn-danger {
+    background: #e94e1b;
+    color: #fff;
+}
+.btn-danger:hover {
+    background: #b32d00;
+}
+
+.card {
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(0,133,62,0.07);
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(0,133,62,0.13);
+}
+.card-title {
+    color: #00853e;
+    font-weight: 700;
+}
+.card-text {
+    color: #b32d00;
+    font-weight: 600;
+}
+
+h1, h2, h3, h4 {
+    color: #00853e;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+input, select, textarea {
+    border-radius: 12px !important;
+    border: 1px solid #e0e0e0 !important;
+    padding: 0.6rem 1rem !important;
+    font-size: 1rem;
+}
+
+footer {
+    background: #00853e;
+    color: #fff;
+    text-align: center;
+    padding: 1.2rem 0 0.5rem 0;
+    margin-top: 3rem;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    font-size: 1.1rem;
+}
+
+.table th, .table td {
+    border: none !important;
+    background: #fff !important;
+}
+
+.alert-success {
+    background: #e6f9e6;
+    color: #00853e;
+    border-radius: 12px;
+    border: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: #fcd116;
+}
+::-webkit-scrollbar-thumb {
+    background: #00853e;
+    border-radius: 8px;
+} 

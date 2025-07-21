@@ -91,7 +91,36 @@ Route::get('/panier/valider', function () {
 })->name('panier.valider');
 
 Route::post('/panier/valider', function (Request $request) {
-    // Ici, on simule la création de la commande (tu pourras l'adapter pour utiliser l'API)
+    $panier = session('panier', []);
+    if (empty($panier)) {
+        return redirect('/panier')->with('error', 'Votre panier est vide.');
+    }
+    $total = collect($panier)->sum(function($item) {
+        return $item['price'] * $item['quantity'];
+    });
+    $adresse = $request->input('adresse');
+    $paiement = $request->input('paiement', 'à la livraison');
+    $is_paid = $paiement === 'en ligne';
+    $user_id = session('user_id');
+    if (!$user_id) {
+        return redirect('/connexion')->with('error', 'Vous devez être connecté pour valider la commande.');
+    }
+    $order = \App\Models\Order::create([
+        'user_id' => $user_id,
+        'total' => $total,
+        'status' => 'en attente',
+        'payment_method' => $paiement,
+        'is_paid' => $is_paid,
+        'address' => $adresse,
+    ]);
+    foreach ($panier as $item) {
+        \App\Models\OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $item['id'],
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+        ]);
+    }
     session()->forget('panier');
     return redirect('/')->with('success', 'Commande validée avec succès !');
 })->name('panier.valider.post');
@@ -248,3 +277,15 @@ Route::post('/admin/produits/ajouter', function (Request $request) {
     \App\Models\Product::create($data);
     return redirect()->route('admin.produits')->with('success', 'Produit ajouté !');
 })->name('admin.produits.ajouter.post');
+
+// Route pour afficher la liste des commandes côté admin
+Route::get('/admin/commandes', [App\Http\Controllers\AdminController::class, 'commandesWeb'])->name('admin.commandes');
+// Route pour marquer une commande comme payée
+Route::post('/admin/commandes/{id}/pay', function($id) {
+    $order = \App\Models\Order::find($id);
+    if ($order && !$order->is_paid) {
+        $order->is_paid = true;
+        $order->save();
+    }
+    return redirect()->back();
+})->name('admin.commandes.pay');

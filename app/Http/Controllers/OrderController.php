@@ -114,7 +114,7 @@ class OrderController extends Controller
     }
 
     // Passer une commande à partir du panier
-    public function placeOrder()
+    public function placeOrder(Request $request)
     {
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->first();
@@ -125,12 +125,19 @@ class OrderController extends Controller
         foreach ($cart->cartItems as $item) {
             $total += $item->product->price * $item->quantity;
         }
+        // Nouveau : choix du mode de paiement
+        $payment_method = $request->input('payment_method', 'à la livraison');
+        $is_paid = false;
+        if ($payment_method === 'en ligne') {
+            // Ici, on simule un paiement réussi
+            $is_paid = true;
+        }
         $order = $user->orders()->create([
             'total' => $total,
             'status' => 'en attente',
-            'payment_method' => 'à la livraison',
-            'is_paid' => false,
-            'address' => 'Adresse à renseigner',
+            'payment_method' => $payment_method,
+            'is_paid' => $is_paid,
+            'address' => $request->input('address', 'Adresse à renseigner'),
         ]);
         foreach ($cart->cartItems as $item) {
             OrderItem::create([

@@ -46,6 +46,7 @@
                         <th>Date</th>
                         <th>Total</th>
                         <th>Statut</th>
+                        <th>Paiement</th>
                         <th>Facture</th>
                         <th>Détail</th>
                     </tr>
@@ -57,6 +58,7 @@
                         <td>{{ $commande->created_at->format('d/m/Y') }}</td>
                         <td>{{ number_format($commande->total, 0, ',', ' ') }} F CFA</td>
                         <td>{{ ucfirst($commande->status) }}</td>
+                        <td>{{ $commande->is_paid ? 'Payée' : 'Non payée' }}</td>
                         <td>
                             <a href="/api/orders/{{ $commande->id }}/invoice" class="btn btn-sm btn-outline-primary">Télécharger</a>
                         </td>

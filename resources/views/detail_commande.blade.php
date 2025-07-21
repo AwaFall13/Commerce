@@ -13,6 +13,7 @@
     <ul>
         <li><strong>Date :</strong> {{ $commande->created_at->format('d/m/Y') }}</li>
         <li><strong>Statut :</strong> {{ ucfirst($commande->status) }}</li>
+        <li><strong>Statut de paiement :</strong> {{ $commande->is_paid ? 'Payée' : 'Non payée' }}</li>
         <li><strong>Total :</strong> {{ number_format($commande->total, 0, ',', ' ') }} F CFA</li>
         <li><strong>Adresse :</strong> {{ $commande->address }}</li>
         <li><strong>Mode de paiement :</strong> {{ $commande->payment_method }}</li>

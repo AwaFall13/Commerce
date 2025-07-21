@@ -83,4 +83,11 @@ class AdminController extends Controller
             'paiements' => $paiements,
         ]);
     }
+
+    // Afficher la liste des commandes pour la vue admin
+    public function commandesWeb()
+    {
+        $commandes = \App\Models\Order::with('user')->orderByDesc('created_at')->paginate(10);
+        return view('admin.commandes.index', compact('commandes'));
+    }
 }

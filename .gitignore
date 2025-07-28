@@ -13,3 +13,20 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# Base de données SQLite (optionnel)
+database/database.sqlite
+
+# Fichiers de cache
+bootstrap/cache/*
+!bootstrap/cache/.gitkeep
+
+# Logs
+storage/logs/*
+!storage/logs/.gitkeep
+
+# Fichiers temporaires
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db

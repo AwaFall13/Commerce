@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-5">
             @if($product->image)
-                <img src="{{ $product->image }}" class="img-fluid" alt="{{ $product->name }}">
+                <img src="{{ $product->image_url }}" class="img-fluid" alt="{{ $product->name }}">
             @else
                 <img src="https://via.placeholder.com/400x400?text=Produit" class="img-fluid" alt="Produit">
             @endif

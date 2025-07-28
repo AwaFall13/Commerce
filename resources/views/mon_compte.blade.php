@@ -60,7 +60,7 @@
                         <td>{{ ucfirst($commande->status) }}</td>
                         <td>{{ $commande->is_paid ? 'Payée' : 'Non payée' }}</td>
                         <td>
-                            <a href="/api/orders/{{ $commande->id }}/invoice" class="btn btn-sm btn-outline-primary">Télécharger</a>
+                            <a href="{{ route('order.invoice.download', $commande->id) }}" class="btn btn-sm btn-outline-primary">Télécharger</a>
                         </td>
                         <td>
                             <a href="{{ route('mon-compte.commande', $commande->id) }}" class="btn btn-sm btn-info">Voir détail</a>

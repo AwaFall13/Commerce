@@ -20,6 +20,21 @@
         .vedette .btn { background: #4A90E2; color: #fff; border-radius: 20px; }
         .vedette .btn:hover { background: #7FB3D3; color: #fff; }
         footer { background: #4A90E2; color: #fff; text-align: center; padding: 1.2rem 0 0.5rem 0; margin-top: 3rem; border-top-left-radius: 30px; border-top-right-radius: 30px; font-size: 1.1rem; }
+        
+        /* Styles ajoutés pour les images */
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+            background-color: #f8f9fa; /* Fond gris clair si image manquante */
+        }
+        .card {
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -30,25 +45,33 @@
         <p>Découvrez les meilleurs produits, promos et nouveautés du shopping en ligne au Sénégal.<br>Livraison rapide, paiement sécurisé, service client local.</p>
         <a href="/catalogue" class="btn btn-lg btn-primary mt-3">Voir tout le catalogue</a>
     </div>
+    
     <h2 class="mb-3">Produits en vedette</h2>
     <div class="row vedette mb-4">
         @foreach($produits as $product)
             <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    @if($product->image)
-                        <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->name }}">
-                    @else
-                        <img src="https://via.placeholder.com/200x200?text=Produit" class="card-img-top" alt="Produit">
-                    @endif
-                    <div class="card-body">
+                <div class="card h-100 shadow-sm">
+                    @php
+                        // Utilise directement les images locales
+                        $imageSrc = asset('images/'.$product->image);
+                    @endphp
+                    
+                    <img src="{{ $imageSrc }}" 
+                         class="card-img-top" 
+                         alt="{{ $product->name }} - {{ number_format($product->price, 0, ',', ' ') }} F CFA"
+                         loading="lazy"
+                         onerror="this.src='https://via.placeholder.com/300x300?text=Image+Non+Disponible'">
+                    
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ $product->name }}</h5>
-                        <p class="card-text">{{ number_format($product->price, 0, ',', ' ') }} F CFA</p>
-                        <a href="/produits/{{ $product->id }}" class="btn btn-sm">Voir le produit</a>
+                        <p class="card-text mt-auto">{{ number_format($product->price, 0, ',', ' ') }} F CFA</p>
+                        <a href="/produits/{{ $product->id }}" class="btn btn-sm mt-2">Voir le produit</a>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+    
     <h2 class="mb-3">Nos catégories</h2>
     <div class="row categories mb-4">
         @foreach($categories as $cat)
@@ -63,5 +86,8 @@
         @endforeach
     </div>
 </div>
+
+@include('layouts.footer')
+
 </body>
-</html> 
+</html>

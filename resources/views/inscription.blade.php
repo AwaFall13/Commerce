@@ -10,7 +10,7 @@
 <div class="container mt-4">
     <a href="/" class="btn btn-secondary mb-3">&larr; Retour au catalogue</a>
     <h1>Inscription</h1>
-    <form method="POST" action="{{ route('inscription') }}">
+    <form method="POST" action="{{ route('register.post') }}">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Nom</label>
@@ -26,7 +26,7 @@
         </div>
         <button type="submit" class="btn btn-success">S'inscrire</button>
     </form>
-    <p class="mt-3">Déjà un compte ? <a href="{{ route('connexion') }}">Se connecter</a></p>
+    <p class="mt-3">Déjà un compte ? <a href="{{ route('login') }}">Se connecter</a></p>
 </div>
 </body>
 </html> 

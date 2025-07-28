@@ -36,10 +36,10 @@ class CategoryProductSeeder extends Seeder
         $produits = [
             [
                 'name' => 'Bissap',
-                'description' => 'Jus de fleurs d’hibiscus, boisson rafraîchissante typique du Sénégal.',
+                'description' => 'Jus de fleurs d\'hibiscus, boisson rafraîchissante typique du Sénégal.',
                 'price' => 1000,
                 'stock' => 50,
-                'image' => 'https://i.imgur.com/8XZqY2L.jpg',
+                'image' => 'bissap.webp',
                 'category_id' => $catIds['Boissons'] ?? 1,
             ],
             [
@@ -47,7 +47,7 @@ class CategoryProductSeeder extends Seeder
                 'description' => 'Tissu traditionnel sénégalais, idéal pour vêtements et accessoires.',
                 'price' => 5000,
                 'stock' => 30,
-                'image' => 'https://i.imgur.com/JK9LmNq.jpg',
+                'image' => 'Pagnes tissés.webp',
                 'category_id' => $catIds['Textile'] ?? 2,
             ],
             [
@@ -55,7 +55,7 @@ class CategoryProductSeeder extends Seeder
                 'description' => 'Savon naturel à base de cendres végétales, pour la beauté de la peau.',
                 'price' => 1500,
                 'stock' => 40,
-                'image' => 'https://i.imgur.com/QW3Rf5p.jpg',
+                'image' => 'Savon noir africain.webp',
                 'category_id' => $catIds['Beauté'] ?? 3,
             ],
             [
@@ -63,7 +63,7 @@ class CategoryProductSeeder extends Seeder
                 'description' => 'Encens traditionnel sénégalais pour parfumer la maison.',
                 'price' => 800,
                 'stock' => 60,
-                'image' => 'https://i.imgur.com/Vn7XqY8.jpg',
+                'image' => 'thiouraye.webp',
                 'category_id' => $catIds['Maison'] ?? 4,
             ],
             [
@@ -71,7 +71,7 @@ class CategoryProductSeeder extends Seeder
                 'description' => 'Sandales faites main en cuir, confortables et élégantes.',
                 'price' => 3500,
                 'stock' => 25,
-                'image' => 'https://i.imgur.com/Lm2KpQ9.jpg',
+                'image' => 'Sandales artisanales.webp',
                 'category_id' => $catIds['Textile'] ?? 2,
             ],
             [
@@ -79,15 +79,15 @@ class CategoryProductSeeder extends Seeder
                 'description' => 'Super-aliment riche en vitamines, issu du fruit du baobab.',
                 'price' => 2000,
                 'stock' => 35,
-                'image' => 'https://i.imgur.com/Ht5NqR2.jpg',
+                'image' => 'Baobab en poudre.webp',
                 'category_id' => $catIds['Boissons'] ?? 1,
             ],
             [
-                'name' => 'Boucles d’oreilles wax',
+                'name' => 'Boucles d\'oreilles wax',
                 'description' => 'Accessoire de mode coloré, fabriqué à la main.',
                 'price' => 1200,
                 'stock' => 45,
-                'image' => 'https://i.imgur.com/Pq8MkL4.jpg',
+                'image' => 'boucles d\'oreilles.jpg',
                 'category_id' => $catIds['Textile'] ?? 2,
             ],
             [
@@ -95,7 +95,7 @@ class CategoryProductSeeder extends Seeder
                 'description' => 'Panier tressé à la main, idéal pour le marché ou la déco.',
                 'price' => 2500,
                 'stock' => 20,
-                'image' => 'https://i.imgur.com/Xy7NqW5.jpg',
+                'image' => 'panier en osier.jpg',
                 'category_id' => $catIds['Maison'] ?? 4,
             ],
         ];

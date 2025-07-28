@@ -55,7 +55,7 @@
         </table>
         <h4 class="text-end">Total : {{ number_format($total, 0, ',', ' ') }} F CFA</h4>
         <div class="text-end">
-            <a href="{{ route('panier.valider') }}" class="btn btn-success">Valider la commande</a>
+            <a href="{{ route('checkout') }}" class="btn btn-success btn-lg">Finaliser la commande</a>
         </div>
     @endif
 </div>

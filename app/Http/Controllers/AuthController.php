@@ -24,7 +24,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Inscription réussie', 'user' => $user], 201);
+        session(['user_id' => $user->id]);
+        return redirect('/')->with('success', 'Inscription réussie !');
     }
 
     // Connexion
@@ -37,53 +38,18 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Les informations sont incorrectes.'],
-            ]);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['email' => 'Identifiants incorrects']);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Connexion réussie',
-            'user' => $user,
-            'token' => $token,
-        ]);
+        session(['user_id' => $user->id]);
+        return redirect('/')->with('success', 'Connexion réussie !');
     }
 
     // Déconnexion
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Déconnexion réussie']);
-    }
-
-    // Voir son profil
-    public function me(Request $request)
-    {
-        return response()->json($request->user());
-    }
-
-    // Modifier son profil
-    public function updateProfile(Request $request)
-    {
-        $user = $request->user();
-        $request->validate([
-            'name' => 'sometimes|required',
-            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:6',
-        ]);
-        if ($request->has('name')) {
-            $user->name = $request->name;
-        }
-        if ($request->has('email')) {
-            $user->email = $request->email;
-        }
-        if ($request->filled('password')) {
-            $user->password = \Hash::make($request->password);
-        }
-        $user->save();
-        return response()->json(['message' => 'Profil mis à jour', 'user' => $user]);
+        session()->forget('user_id');
+        return redirect('/')->with('success', 'Déconnexion réussie !');
     }
 }

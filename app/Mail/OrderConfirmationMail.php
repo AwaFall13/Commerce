@@ -16,8 +16,6 @@ class OrderConfirmationMail extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct(Order $order)
     {
@@ -26,13 +24,17 @@ class OrderConfirmationMail extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build()
     {
-        return $this->subject('Confirmation de votre commande')
-            ->markdown('emails.order_confirmation')
-            ->with(['order' => $this->order]);
+        return $this->subject('Confirmation de votre commande - ' . $this->order->order_number)
+                    ->view('emails.order-confirmation')
+                    ->with([
+                        'order' => $this->order,
+                        'orderNumber' => $this->order->order_number,
+                        'customerName' => $this->order->user->name,
+                        'totalAmount' => number_format($this->order->total_amount, 0, ',', ' ') . ' F CFA',
+                        'paymentMethod' => $this->order->payment_method_label,
+                    ]);
     }
 }

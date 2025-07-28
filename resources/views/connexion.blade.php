@@ -13,7 +13,7 @@
     @if($errors->any())
         <div class="alert alert-danger">{{ $errors->first() }}</div>
     @endif
-    <form method="POST" action="{{ route('connexion') }}">
+    <form method="POST" action="{{ route('login.post') }}">
         @csrf
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
@@ -25,7 +25,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
-    <p class="mt-3">Pas encore de compte ? <a href="{{ route('inscription') }}">S'inscrire</a></p>
+    <p class="mt-3">Pas encore de compte ? <a href="{{ route('register') }}">S'inscrire</a></p>
 </div>
 </body>
 </html> 

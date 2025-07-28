@@ -17,7 +17,7 @@
         <li><strong>Total :</strong> {{ number_format($commande->total, 0, ',', ' ') }} F CFA</li>
         <li><strong>Adresse :</strong> {{ $commande->address }}</li>
         <li><strong>Mode de paiement :</strong> {{ $commande->payment_method }}</li>
-        <li><a href="/api/orders/{{ $commande->id }}/invoice" class="btn btn-sm btn-outline-primary">Télécharger la facture</a></li>
+        <li><a href="{{ route('order.invoice.download', $commande->id) }}" class="btn btn-sm btn-outline-primary">Télécharger la facture</a></li>
     </ul>
     <h4>Produits commandés</h4>
     <table class="table">

@@ -31,7 +31,7 @@
                 <td>{{ ucfirst($commande->status) }}</td>
                 <td>{{ $commande->is_paid ? 'Payée' : 'Non payée' }}</td>
                 <td>
-                    <a href="/api/orders/{{ $commande->id }}/invoice" class="btn btn-sm btn-outline-primary" target="_blank">Facture PDF</a>
+                    <a href="{{ route('order.invoice.download', $commande->id) }}" class="btn btn-sm btn-outline-primary" target="_blank">Facture PDF</a>
                     @if(!$commande->is_paid)
                     <form method="POST" action="/admin/commandes/{{ $commande->id }}/pay" style="display:inline">
                         @csrf

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Category; // Added this import for the catalogue function
 
 class ProductController extends Controller
 {
@@ -105,6 +106,11 @@ class ProductController extends Controller
         }
         $data = $request->all();
         if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe et n'est pas une URL
+            if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
+                $oldPath = str_replace('/storage/', '', $product->image);
+                \Storage::disk('public')->delete($oldPath);
+            }
             $path = $request->file('image')->store('products', 'public');
             $data['image'] = '/storage/' . $path;
         }
@@ -124,7 +130,39 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Produit non trouvé'], 404);
         }
+        // Supprimer l'image associée si ce n'est pas une URL
+        if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
+            $oldPath = str_replace('/storage/', '', $product->image);
+            \Storage::disk('public')->delete($oldPath);
+        }
         $product->delete();
         return response()->json(['message' => 'Produit supprimé']);
+    }
+
+    /**
+     * Afficher le catalogue avec recherche
+     */
+    public function catalogue(Request $request)
+    {
+        $query = Product::with('category');
+        
+        // Recherche par mots-clés
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        // Filtrage par catégorie
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('category_id', $request->category);
+        }
+        
+        $products = $query->paginate(12);
+        $categories = Category::all();
+        
+        return view('catalogue', compact('products', 'categories'));
     }
 }

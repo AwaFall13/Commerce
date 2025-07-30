@@ -111,9 +111,6 @@ Route::get('/panier/valider', function () {
 })->name('panier.valider');
 
 Route::post('/panier/valider', function (Request $request) {
-    // Débogage
-    \Log::info('Début de finalisation de commande');
-    
     $panier = session('panier', []);
     if (empty($panier)) {
         \Log::error('Panier vide');
@@ -128,14 +125,7 @@ Route::post('/panier/valider', function (Request $request) {
     $paiement = $request->input('paiement', 'à la livraison');
     $payment_method = $paiement === 'en ligne' ? 'online' : 'cash_on_delivery';
     $payment_status = $paiement === 'en ligne' ? 'paid' : 'pending';
-    $user_id = session('user_id');
-    
-    \Log::info('Données de commande', [
-        'user_id' => $user_id,
-        'total' => $total,
-        'adresse' => $adresse,
-        'paiement' => $paiement
-    ]);
+                        $user_id = session('user_id');
     
     if (!$user_id) {
         \Log::error('Utilisateur non connecté');
@@ -145,8 +135,6 @@ Route::post('/panier/valider', function (Request $request) {
     try {
         // Générer un numéro de commande unique
         $order_number = 'CMD-' . date('Ymd') . '-' . strtoupper(uniqid());
-        
-        \Log::info('Création de la commande', ['order_number' => $order_number]);
         
         $order = \App\Models\Order::create([
             'user_id' => $user_id,
@@ -161,8 +149,6 @@ Route::post('/panier/valider', function (Request $request) {
             'shipping_phone' => '777777777', // Valeur par défaut
         ]);
         
-        \Log::info('Commande créée', ['order_id' => $order->id]);
-        
         foreach ($panier as $item) {
             \App\Models\OrderItem::create([
                 'order_id' => $order->id,
@@ -173,7 +159,6 @@ Route::post('/panier/valider', function (Request $request) {
         }
         
         session()->forget('panier');
-        \Log::info('Commande finalisée avec succès');
         
         return redirect('/')->with('success', 'Commande validée avec succès !');
         

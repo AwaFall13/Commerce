@@ -78,8 +78,8 @@
         <h3>Informations de l'entreprise</h3>
         <p><strong>E-Commerce</strong><br>
         Adresse de l'entreprise<br>
-        Téléphone: +XXX XXX XXX XXX<br>
-        Email: contact@ecommerce.com</p>
+        Téléphone: +33 921 28 28<br>
+        Email: MYWA@e-commerce.com</p>
     </div>
 
     <div class="invoice-info">

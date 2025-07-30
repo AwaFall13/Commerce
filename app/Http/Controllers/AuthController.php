@@ -24,6 +24,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        session()->flush();
         session(['user_id' => $user->id]);
         return redirect('/')->with('success', 'Inscription réussie !');
     }
@@ -42,6 +43,7 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Identifiants incorrects']);
         }
 
+        session()->flush();
         session(['user_id' => $user->id]);
         return redirect('/')->with('success', 'Connexion réussie !');
     }

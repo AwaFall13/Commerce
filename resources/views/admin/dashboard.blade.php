@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Tableau de bord - Administration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -12,8 +13,18 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Tableau de bord</h1>
         <div>
-            <a href="{{ route('admin.produits') }}" class="btn btn-primary">Gérer les produits</a>
-            <a href="{{ route('admin.orders') }}" class="btn btn-success">Gérer les commandes</a>
+            <a href="{{ route('admin.produits') }}" class="btn btn-primary">
+                <i class="fas fa-box"></i> Gérer les produits
+            </a>
+            <a href="{{ route('admin.orders') }}" class="btn btn-success">
+                <i class="fas fa-shopping-cart"></i> Gérer les commandes
+            </a>
+            <a href="{{ route('admin.users') }}" class="btn btn-info">
+                <i class="fas fa-users"></i> Gérer les utilisateurs
+            </a>
+            <a href="{{ route('admin.categories') }}" class="btn btn-warning">
+                <i class="fas fa-tags"></i> Gérer les catégories
+            </a>
         </div>
     </div>
 

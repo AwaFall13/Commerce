@@ -1,7 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container">
         <a class="navbar-brand" href="/">E-Commerce</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/accueil">Accueil</a>
@@ -37,6 +40,8 @@
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.produits') }}">Gérer les produits</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.orders') }}">Gérer les commandes</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.users') }}">Gérer les utilisateurs</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.categories') }}">Gérer les catégories</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.messages') }}">Messages de contact</a></li>
                             </ul>
                         </li>
@@ -52,4 +57,7 @@
             </ul>
         </div>
     </div>
-</nav> 
+</nav>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 

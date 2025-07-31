@@ -72,6 +72,10 @@ class Order extends Model
         return [
             'online' => 'Paiement en ligne',
             'cash_on_delivery' => 'Paiement à la livraison',
+            'orange' => 'Orange Money',
+            'wave' => 'Wave',
+            'visa' => 'Carte Visa/Mastercard',
+            'à la livraison' => 'Paiement à la livraison',
         ][$this->payment_method] ?? $this->payment_method;
     }
 

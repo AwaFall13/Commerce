@@ -122,9 +122,15 @@ Route::post('/panier/valider', function (Request $request) {
     });
     
     $adresse = $request->input('adresse');
+    $telephone = $request->input('telephone');
+    $notes = $request->input('notes');
     $paiement = $request->input('paiement', 'à la livraison');
-    $payment_method = $paiement === 'en ligne' ? 'online' : 'cash_on_delivery';
-    $payment_status = $paiement === 'en ligne' ? 'paid' : 'pending';
+    
+    // Déterminer le statut de paiement selon le moyen choisi
+    $payment_status = 'pending';
+    if (in_array($paiement, ['orange', 'wave', 'visa'])) {
+        $payment_status = 'paid'; // Paiement avant livraison
+    }
                         $user_id = session('user_id');
     
     if (!$user_id) {
@@ -141,12 +147,13 @@ Route::post('/panier/valider', function (Request $request) {
             'order_number' => $order_number,
             'total_amount' => $total,
             'status' => 'pending',
-            'payment_method' => $payment_method,
+            'payment_method' => $paiement,
             'payment_status' => $payment_status,
             'shipping_address' => $adresse,
             'shipping_city' => 'Dakar', // Valeur par défaut
             'shipping_postal_code' => '10000', // Valeur par défaut
-            'shipping_phone' => '777777777', // Valeur par défaut
+            'shipping_phone' => $telephone,
+            'notes' => $notes,
         ]);
         
         foreach ($panier as $item) {
@@ -288,11 +295,104 @@ Route::post('/admin/produits/ajouter', function (Request $request) {
     return redirect()->route('admin.produits')->with('success', 'Produit ajouté !');
 })->name('admin.produits.ajouter.post');
 
+// Routes pour modifier et supprimer les produits
+Route::get('/admin/produits/{id}/modifier', function ($id) {
+    $user = null;
+    if (session('user_id')) {
+        $user = \App\Models\User::find(session('user_id'));
+    }
+    if (!$user || !$user->is_admin) {
+        abort(403, 'Accès réservé à l\'administrateur');
+    }
+    $produit = \App\Models\Product::findOrFail($id);
+    $categories = \App\Models\Category::all();
+    return view('admin.produits.modifier', compact('produit', 'categories'));
+})->name('admin.produits.modifier');
+
+Route::post('/admin/produits/{id}/modifier', function (Request $request, $id) {
+    $user = null;
+    if (session('user_id')) {
+        $user = \App\Models\User::find(session('user_id'));
+    }
+    if (!$user || !$user->is_admin) {
+        abort(403, 'Accès réservé à l\'administrateur');
+    }
+    
+    $produit = \App\Models\Product::findOrFail($id);
+    
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'stock' => 'required|integer',
+        'category_id' => 'required|exists:categories,id',
+        'image' => 'nullable|image',
+    ]);
+    
+    $data = $request->except('image');
+    if ($request->hasFile('image')) {
+        // Supprimer l'ancienne image si elle existe
+        if ($produit->image && !filter_var($produit->image, FILTER_VALIDATE_URL)) {
+            $oldImagePath = public_path('storage/' . str_replace('/storage/', '', $produit->image));
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
+        
+        $path = $request->file('image')->store('products', 'public');
+        $data['image'] = '/storage/' . $path;
+    }
+    
+    $produit->update($data);
+    return redirect()->route('admin.produits')->with('success', 'Produit modifié avec succès !');
+})->name('admin.produits.modifier.post');
+
+Route::delete('/admin/produits/{id}', function ($id) {
+    $user = null;
+    if (session('user_id')) {
+        $user = \App\Models\User::find(session('user_id'));
+    }
+    if (!$user || !$user->is_admin) {
+        abort(403, 'Accès réservé à l\'administrateur');
+    }
+    
+    $produit = \App\Models\Product::findOrFail($id);
+    
+    // Supprimer l'image si elle existe
+    if ($produit->image && !filter_var($produit->image, FILTER_VALIDATE_URL)) {
+        $imagePath = public_path('storage/' . str_replace('/storage/', '', $produit->image));
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+    }
+    
+    $produit->delete();
+    return redirect()->route('admin.produits')->with('success', 'Produit supprimé avec succès !');
+})->name('admin.produits.supprimer');
+
 // Routes d'administration
 Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+// Gestion des commandes
 Route::get('/admin/commandes', [App\Http\Controllers\AdminController::class, 'ordersWeb'])->name('admin.orders');
 Route::get('/admin/commandes/{id}/status/{status}', [App\Http\Controllers\AdminController::class, 'updateOrderStatus'])->name('admin.order.status');
 Route::get('/admin/commandes/{id}/pay', [App\Http\Controllers\AdminController::class, 'markOrderAsPaid'])->name('admin.order.pay');
+
+// Gestion des utilisateurs
+Route::get('/admin/utilisateurs', [App\Http\Controllers\AdminController::class, 'usersWeb'])->name('admin.users');
+Route::get('/admin/utilisateurs/{id}', [App\Http\Controllers\AdminController::class, 'showUser'])->name('admin.users.show');
+Route::get('/admin/utilisateurs/{id}/modifier', [App\Http\Controllers\AdminController::class, 'editUser'])->name('admin.users.edit');
+Route::post('/admin/utilisateurs/{id}/modifier', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('admin.users.update');
+Route::delete('/admin/utilisateurs/{id}', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
+// Gestion des catégories
+Route::get('/admin/categories', [App\Http\Controllers\AdminController::class, 'categoriesWeb'])->name('admin.categories');
+Route::get('/admin/categories/ajouter', [App\Http\Controllers\AdminController::class, 'addCategoryForm'])->name('admin.categories.add');
+Route::post('/admin/categories/ajouter', [App\Http\Controllers\AdminController::class, 'addCategory'])->name('admin.categories.store');
+Route::get('/admin/categories/{id}/modifier', [App\Http\Controllers\AdminController::class, 'editCategoryForm'])->name('admin.categories.edit');
+Route::post('/admin/categories/{id}/modifier', [App\Http\Controllers\AdminController::class, 'updateCategory'])->name('admin.categories.update');
+Route::delete('/admin/categories/{id}', [App\Http\Controllers\AdminController::class, 'deleteCategory'])->name('admin.categories.delete');
+
+// Gestion des messages
 Route::get('/admin/messages', [App\Http\Controllers\AdminController::class, 'messages'])->name('admin.messages');
 
 // Route pour mettre à jour les images avec des URLs spécifiques aux produits africains

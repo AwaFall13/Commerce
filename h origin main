@@ -1,0 +1,6 @@
+[33mc0be8a4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix: Correction du problème d'historique des commandes et activation PostgreSQL
+[33m374f7d9[m Projet e-commerce complet avec support PostgreSQL/MySQL et authentification web
+[33m758d2f2[m Ajout gestion paiement, affichage statut, factures PDF, images catalogue, vue admin commandes
+[33m71da1a2[m  Mise à jour complète du projet e-commerce MYWA Boutique
+[33m4171b03[m premier commit
+[33m8ed7a5c[m Premier commit
